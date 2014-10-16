@@ -24,14 +24,13 @@ class EncoderTest extends Specification {
 
     "generate verifiable username" in {
       val data = fill(6)(5.toByte)
-      val sharedSecret: Array[Byte] = fill(20)(1.toByte)
-      val usernameEncoder = Encoder.withSecret(sharedSecret)
+      val usernameEncoder = Encoder.withSecret("shared-secret-thing")
 
       val username = usernameEncoder.encodeSigned(data)
 
       usernameEncoder.decodeSigned(username) must beSome(data)
 
-      Encoder.withSecret(fill(20)(2.toByte)).decodeSigned(username) mustEqual None
+      Encoder.withSecret("different-shared-secret").decodeSigned(username) mustEqual None
     }
   }
 }

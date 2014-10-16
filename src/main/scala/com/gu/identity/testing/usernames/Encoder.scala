@@ -55,7 +55,10 @@ object Encoder {
     }
   }
 
-  def withSecret(sharedSecret: Array[Byte]): Encoder = new Encoder {
+  def withSecret(sharedSecret: String): Encoder = new Encoder {
+    
+    val sharedSecretBytes = sharedSecret.getBytes("utf-8")
+    
     def encodeSigned(data: Array[Byte]):String = {
       require(data.length == PayloadByteLength)
       val bb = ByteBuffer.allocate(MaxByteLength)
@@ -69,10 +72,10 @@ object Encoder {
       if (constantTimeEquals(sig, truncatedSigFor(data))) Some(data) else None
     }
 
-    def truncatedSigFor(byteArray: Array[Byte]): Array[Byte] = {
+    def truncatedSigFor(data: Array[Byte]): Array[Byte] = {
       val mac = Mac.getInstance("HmacSHA1")
-      mac.init(new SecretKeySpec(sharedSecret, "HmacSHA1"))
-      mac.doFinal(byteArray).take(TruncatedSigByteLength)
+      mac.init(new SecretKeySpec(sharedSecretBytes, "HmacSHA1"))
+      mac.doFinal(data).take(TruncatedSigByteLength)
     }
   }
 }
