@@ -13,6 +13,8 @@ scalaVersion := "2.10.4"
 
 crossScalaVersions := Seq("2.10.4", "2.11.2")
 
+ReleaseKeys.crossBuild := true
+
 scmInfo := Some(ScmInfo(
   url("https://github.com/guardian/identity-test-users"),
   "scm:git:git@github.com:guardian/identity-test-users.git"
