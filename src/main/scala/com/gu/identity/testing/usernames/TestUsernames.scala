@@ -9,6 +9,9 @@ trait TestUsernames {
 
   def validate(username: String): Option[Array[Byte]]
 
+  def generate(): String = generate(Array.ofDim[Byte](2))
+
+  def isValid(username: String): Boolean = validate(username).isDefined
 }
 
 object TestUsernames {
