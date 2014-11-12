@@ -1,32 +1,32 @@
-package com.gu.identity.testing.usernames
+package com.gu.identity.testing.users
 
 import java.nio.ByteBuffer
 
 import com.github.nscala_time.time.Imports._
 
-trait TestUsernames {
+trait TestUsers {
   def generate(conf: Array[Byte]): String
 
-  def validate(username: String): Option[Array[Byte]]
+  def validate(userString: String): Option[Array[Byte]]
 
   def generate(): String = generate(Array.ofDim[Byte](2))
 
-  def isValid(username: String): Boolean = validate(username).isDefined
+  def isValid(userString: String): Boolean = validate(userString).isDefined
 }
 
-object TestUsernames {
+object TestUsers {
 
   val ConfPayloadByteSize = 2
 
-  def apply(usernameEncoder: Encoder, recency: Duration = 30.minutes): TestUsernames = new TestUsernames {
+  def apply(encoder: Encoder, recency: Duration = 30.minutes): TestUsers = new TestUsers {
     def generate(conf: Array[Byte]): String = {
       val bb = ByteBuffer.allocate(Encoder.PayloadByteLength)
       bb.putInt((DateTime.now.getMillis / 1000).toInt)
       bb.put(conf)
-      usernameEncoder.encodeSigned(bb.array())
+      encoder.encodeSigned(bb.array())
     }
 
-    def validate(username: String): Option[Array[Byte]] = {
+    def validate(userString: String): Option[Array[Byte]] = {
       def extractRecentConfData(validlySignedData: Array[Byte]): Option[Array[Byte]] = {
         val bb = ByteBuffer.wrap(validlySignedData)
         val creationTime = new DateTime(bb.getInt() * 1000L)
@@ -34,9 +34,8 @@ object TestUsernames {
         bb.get(confPayload)
         if ((creationTime to DateTime.now).duration < recency) Some(confPayload) else None
       }
-
       for {
-        validlySignedData <- usernameEncoder.decodeSigned(username)
+        validlySignedData <- encoder.decodeSigned(userString.takeWhile(Encoder.BaseChars))
         recentlyCreatedConfData <- extractRecentConfData(validlySignedData)
       } yield recentlyCreatedConfData
     }

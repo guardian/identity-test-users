@@ -1,4 +1,4 @@
-package com.gu.identity.testing.usernames
+package com.gu.identity.testing.users
 
 import java.io.FileInputStream
 import java.util.Properties
@@ -18,7 +18,7 @@ object Main extends App {
 
   println(s"Loaded secret ${secret.take(3)}...")
 
-  private val usernames = TestUsernames(Encoder.withSecret(secret), 30.minutes)
+  private val userString = TestUsers(Encoder.withSecret(secret), 30.minutes)
 
-  println(s"Generated username : ${usernames.generate()}")
+  println(s"Generated user string : ${userString.generate()}")
 }

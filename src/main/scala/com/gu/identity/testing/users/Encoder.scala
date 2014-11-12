@@ -1,10 +1,11 @@
-package com.gu.identity.testing.usernames
+package com.gu.identity.testing.users
 
 import java.nio.ByteBuffer
 import javax.crypto.Mac
 import javax.crypto.spec.SecretKeySpec
 
 trait Encoder {
+
   def encodeSigned(data: Array[Byte]): String
 
   def decodeSigned(username: String):Option[Array[Byte]]
@@ -16,6 +17,8 @@ object Encoder {
   val UsernameMaxLength = 20
 
   val BaseString: String = ((0 to 9) ++ ('A' to 'Z') ++ ('a' to 'z')).mkString
+
+  val BaseChars: Set[Char] = BaseString.toSet
   
   val Base = BaseString.length
 

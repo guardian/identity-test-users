@@ -1,6 +1,6 @@
-package com.gu.identity.testing.usernames
+package com.gu.identity.testing.users
 
-import com.gu.identity.testing.usernames.Encoder._
+import com.gu.identity.testing.users.Encoder._
 import org.specs2.mutable.Specification
 
 import scala.Array.fill
