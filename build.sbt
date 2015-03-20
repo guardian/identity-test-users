@@ -1,3 +1,4 @@
+import sbt.Keys._
 import sbtrelease._
 import ReleaseStateTransformations._
 
@@ -9,9 +10,9 @@ name := "identity-test-users"
 
 organization := "com.gu"
 
-scalaVersion := "2.10.4"
+scalaVersion := "2.10.5"
 
-crossScalaVersions := Seq("2.10.4", "2.11.2")
+crossScalaVersions := Seq(scalaVersion.value, "2.11.6")
 
 ReleaseKeys.crossBuild := true
 
@@ -36,9 +37,8 @@ pomExtra := (
 licenses := Seq("Apache V2" -> url("http://www.apache.org/licenses/LICENSE-2.0.html"))
 
 libraryDependencies ++= Seq(
-  "com.github.nscala-time" %% "nscala-time" % "1.4.0",
-  "org.specs2" %% "specs2" % "2.3.13" % "test",
-  "com.typesafe.scala-logging" %% "scala-logging-slf4j" % "2.1.2"
+  "com.github.nscala-time" %% "nscala-time" % "1.8.0",
+  "org.specs2" %% "specs2" % "2.3.13" % "test"
 )
 
 lazy val root = project in file(".")
