@@ -10,9 +10,9 @@ name := "identity-test-users"
 
 organization := "com.gu"
 
-scalaVersion := "2.10.5"
+scalaVersion := "2.11.8"
 
-crossScalaVersions := Seq(scalaVersion.value, "2.11.6")
+crossScalaVersions := Seq(scalaVersion.value, "2.12.1")
 
 ReleaseKeys.crossBuild := true
 
@@ -38,7 +38,7 @@ licenses := Seq("Apache V2" -> url("http://www.apache.org/licenses/LICENSE-2.0.h
 
 libraryDependencies ++= Seq(
   "com.github.nscala-time" %% "nscala-time" % "1.8.0",
-  "org.specs2" %% "specs2" % "2.3.13" % "test"
+  "org.specs2" %% "specs2-core" % "3.8.7" % "test"
 )
 
 lazy val root = project in file(".")
