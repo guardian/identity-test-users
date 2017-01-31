@@ -1,9 +1,8 @@
 package com.gu.identity.testing.usernames
 
 import java.io.FileInputStream
+import java.time.Duration
 import java.util.Properties
-
-import com.github.nscala_time.time.Imports._
 
 object Main extends App {
   val propertyName="identity.test.users.secret"
@@ -18,7 +17,7 @@ object Main extends App {
 
   println(s"Loaded secret ${secret.take(3)}...")
 
-  private val usernames = TestUsernames(Encoder.withSecret(secret), 30.minutes)
+  private val usernames = TestUsernames(Encoder.withSecret(secret), Duration.ofMinutes(30))
 
   println(s"Generated username : ${usernames.generate()}")
 }
