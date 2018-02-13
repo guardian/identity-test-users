@@ -37,7 +37,7 @@ pomExtra := (
 licenses := Seq("Apache V2" -> url("http://www.apache.org/licenses/LICENSE-2.0.html"))
 
 libraryDependencies ++= Seq(
-  "com.typesafe.scala-logging" %% "scala-logging" % "3.5.0",
+  "com.typesafe.scala-logging" %% "scala-logging" % "3.7.2",
   "ch.qos.logback" % "logback-classic" % "1.1.9" % "test",
   "org.specs2" %% "specs2-core" % "3.8.7" % "test"
 )
