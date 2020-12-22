@@ -12,7 +12,7 @@ organization := "com.gu"
 
 scalaVersion := "2.11.8"
 
-crossScalaVersions := Seq(scalaVersion.value, "2.12.1")
+crossScalaVersions := Seq(scalaVersion.value, "2.12.1", "2.13.4")
 
 ReleaseKeys.crossBuild := true
 
@@ -37,9 +37,9 @@ pomExtra := (
 licenses := Seq("Apache V2" -> url("http://www.apache.org/licenses/LICENSE-2.0.html"))
 
 libraryDependencies ++= Seq(
-  "com.typesafe.scala-logging" %% "scala-logging" % "3.7.2",
+  "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
   "ch.qos.logback" % "logback-classic" % "1.1.9" % "test",
-  "org.specs2" %% "specs2-core" % "3.8.7" % "test"
+  "org.specs2" %% "specs2-core" % "4.10.0" % "test"
 )
 
 lazy val root = project in file(".")
