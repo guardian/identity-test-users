@@ -1,11 +1,6 @@
-import sbt.Keys._
-import sbtrelease._
-import ReleaseStateTransformations._
-import ReleaseTransformations._
-
-//releaseSettings
-
-//sonatypeSettings
+import sbt.Keys.*
+import sbtrelease.*
+import ReleaseStateTransformations.*
 
 name := "identity-test-users"
 
