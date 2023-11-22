@@ -1,20 +1,16 @@
-import sbt.Keys._
-import sbtrelease._
-import ReleaseStateTransformations._
-
-releaseSettings
-
-sonatypeSettings
+import sbt.Keys.*
+import sbtrelease.*
+import ReleaseStateTransformations.*
 
 name := "identity-test-users"
 
 organization := "com.gu"
 
-scalaVersion := "2.11.8"
+scalaVersion := "2.13.12"
 
-crossScalaVersions := Seq(scalaVersion.value, "2.12.1", "2.13.4")
+crossScalaVersions := Seq(scalaVersion.value, "3.3.1")
 
-ReleaseKeys.crossBuild := true
+releaseCrossBuild := true
 
 scmInfo := Some(ScmInfo(
   url("https://github.com/guardian/identity-test-users"),
@@ -36,15 +32,17 @@ pomExtra := (
 
 licenses := Seq("Apache V2" -> url("http://www.apache.org/licenses/LICENSE-2.0.html"))
 
+publishTo := sonatypePublishToBundle.value
+
 libraryDependencies ++= Seq(
-  "com.typesafe.scala-logging" %% "scala-logging" % "3.9.2",
-  "ch.qos.logback" % "logback-classic" % "1.1.9" % "test",
-  "org.specs2" %% "specs2-core" % "4.10.0" % "test"
+  "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5",
+  "ch.qos.logback" % "logback-classic" % "1.4.11" % "test",
+  "org.specs2" %% "specs2-core" % "4.20.3" % "test"
 )
 
 lazy val root = project in file(".")
 
-ReleaseKeys.releaseProcess := Seq[ReleaseStep](
+releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
   runClean,
@@ -52,12 +50,9 @@ ReleaseKeys.releaseProcess := Seq[ReleaseStep](
   setReleaseVersion,
   commitReleaseVersion,
   tagRelease,
-  ReleaseStep(
-    action = state => Project.extract(state).runTask(PgpKeys.publishSigned, state)._1,
-    enableCrossBuild = true
-  ),
+  releaseStepCommandAndRemaining("+publishSigned"),
+  releaseStepCommand("sonatypeBundleRelease"),
   setNextVersion,
   commitNextVersion,
-  ReleaseStep(state => Project.extract(state).runTask(SonatypeKeys.sonatypeReleaseAll, state)._1),
   pushChanges
 )
