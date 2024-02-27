@@ -1,4 +1,4 @@
-identity-test-users
+identity-test-users [![Release](https://github.com/guardian/identity-test-users/actions/workflows/release.yml/badge.svg)](https://github.com/guardian/identity-test-users/actions/workflows/release.yml)
 ===================
 
 See https://sites.google.com/a/guardian.co.uk/guardan-identity/identity/test-users for more details.
