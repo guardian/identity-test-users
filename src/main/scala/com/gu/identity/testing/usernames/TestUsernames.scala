@@ -29,7 +29,12 @@ object TestUsernames extends LazyLogging {
       val bb = ByteBuffer.allocate(Encoder.PayloadByteLength)
       bb.putInt(Instant.now(clock).getEpochSecond.toInt)
       bb.put(conf)
-      usernameEncoder.encodeSigned(bb.array())
+      val baseUsername = usernameEncoder.encodeSigned(bb.array())
+      // upper case half of the letters to make it usable as a password too
+      baseUsername.zipWithIndex.map {
+        case (c, idx) if idx % 2 == 0 => c.toUpper
+        case (c, _) => c
+      }.mkString
     }
 
     def validate(username: String): Option[Array[Byte]] = {
@@ -55,7 +60,7 @@ object TestUsernames extends LazyLogging {
       }
 
       for {
-        validlySignedData <- usernameEncoder.decodeSigned(username)
+        validlySignedData <- usernameEncoder.decodeSigned(username.toLowerCase)
         recentlyCreatedConfData <- extractRecentConfData(validlySignedData)
       } yield recentlyCreatedConfData
     }
