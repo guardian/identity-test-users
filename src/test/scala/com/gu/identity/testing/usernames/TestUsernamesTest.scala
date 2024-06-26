@@ -49,5 +49,25 @@ class TestUsernamesTest extends Specification {
        TestUsernames(encoder)(clockThatIsCorrect).isValid(username) must beFalse
      }
 
+     "extract from an email address" in {
+       val extractedToken = TestUsernames.maybeTokenFromEmail("test.user+TOKEN@thegulocal.com")
+       extractedToken must beSome("TOKEN")
+     }
+
+     "not extract from an email address without a subaddress" in {
+       val extractedToken = TestUsernames.maybeTokenFromEmail("TOKEN@thegulocal.com")
+       extractedToken must beNone
+     }
+
+     "not extract from an email address with no domain separator" in {
+       val extractedToken = TestUsernames.maybeTokenFromEmail("test.user.without.domain")
+       extractedToken must beNone
+     }
+
+     "embed into an email address" in {
+       val email = TestUsernames.tokenToEmail("test.user@thegulocal.com", "TOKEN")
+       email must beEqualTo("test.user+TOKEN@thegulocal.com")
+     }
+
    }
  }
