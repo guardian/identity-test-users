@@ -15,7 +15,7 @@ object Encoder {
 
   val UsernameMaxLength = 20
 
-  val BaseString: String = ((0 to 9) ++ ('A' to 'Z') ++ ('a' to 'z')).mkString
+  val BaseString: String = ((0 to 9) ++ ('a' to 'z')).mkString
   
   val Base = BaseString.length
 

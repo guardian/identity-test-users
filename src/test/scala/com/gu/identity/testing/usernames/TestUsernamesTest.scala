@@ -25,6 +25,16 @@ class TestUsernamesTest extends Specification {
        testUsernames.validate(username) must beSome(confData)
      }
 
+     "tolerate being lowercased e.g. via identity email addresses" in {
+       val testUsernames = TestUsernames(encoder)
+
+       val confData = fill(2)(6.toByte)
+       val username = testUsernames.generate(confData)
+       val lower = username.toLowerCase
+
+       testUsernames.validate(lower) must beSome(confData)
+     }
+
      "tolerate clock drift where generator is ahead of verifer" in {
        val clockThatIsAhead = Clock.offset(clockThatIsCorrect, ofMinutes(5))
        val username = TestUsernames(encoder)(clockThatIsAhead).generate(fill(2)(0.toByte))
