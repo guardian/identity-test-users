@@ -19,5 +19,5 @@ object Main extends App {
 
   private val usernames = TestUsernames(Encoder.withSecret(secret), Duration.ofMinutes(30))
 
-  println(s"Generated username : ${usernames.generate()}")
+  println(s"Generated username : ${usernames.generateEmail(None)}")
 }
