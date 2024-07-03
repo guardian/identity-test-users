@@ -49,7 +49,7 @@ class TestUsernames(usernameEncoder: Encoder, recency: Duration)(implicit clock:
 
   def isValid(username: String): Boolean = validate(username).isDefined
 
-  def generateEmail(baseEmail: String): TestUser = {
+  def generateEmail(baseEmail: Option[String]): TestUser = {
     val token = generate(Array.ofDim[Byte](2))
     val email: String = tokenToEmail(baseEmail, token)
     TestUser(email, token)
@@ -73,13 +73,17 @@ object TestUsernames extends LazyLogging {
         case _ => None
       }
       possibleTestUsername <- localPart.split('+').toList match {
-        case _ :: subAddress :: _ => Some(subAddress)
-        case _ => None
+        case _ :: subAddress :: Nil => Some(subAddress)
+        case other :: Nil => Some(other) // if there's no plus just take the whole part
+        case _ => None // multiple pluses
       }
     } yield possibleTestUsername
 
-  def tokenToEmail(baseEmail: String, token: String) =
-    baseEmail.replace("@", s"+$token@")
+  def tokenToEmail(baseEmail: Option[String], token: String) =
+    baseEmail match {
+      case Some(email) => email.replace("@", s"+$token@")
+      case None => s"$token@thegulocal.com"
+    }
 
   val ConfPayloadByteSize = 2
 

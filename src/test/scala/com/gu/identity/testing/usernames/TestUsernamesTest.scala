@@ -49,14 +49,43 @@ class TestUsernamesTest extends Specification {
        TestUsernames(encoder)(clockThatIsCorrect).isValid(username) must beFalse
      }
 
+     "roundtrip as a generic address" in {
+       val testUsernames = TestUsernames(encoder)
+
+       val username = testUsernames.generateEmail(None)
+       println("generated: " + username)
+
+       testUsernames.isValidEmail(username.email) must beTrue
+     }
+
+     "roundtrip as a known email address" in {
+       val testUsernames = TestUsernames(encoder)
+
+       val username = testUsernames.generateEmail(Some("test.user@thegulocal.com"))
+
+       testUsernames.isValidEmail(username.email) must beTrue
+     }
+
+     "not think a normal email address is a test user" in {
+       val testUsernames = TestUsernames(encoder)
+
+       testUsernames.isValidEmail("dummy@thegulocal.com") must beFalse
+     }
+
+     "not think a normal email address with a plus is a test user" in {
+       val testUsernames = TestUsernames(encoder)
+
+       testUsernames.isValidEmail("dummy+1234@thegulocal.com") must beFalse
+     }
+
      "extract from an email address" in {
        val extractedToken = TestUsernames.maybeTokenFromEmail("test.user+TOKEN@thegulocal.com")
        extractedToken must beSome("TOKEN")
      }
 
-     "not extract from an email address without a subaddress" in {
+     "extract the whole local part from an email address without a subaddress" in {
        val extractedToken = TestUsernames.maybeTokenFromEmail("TOKEN@thegulocal.com")
-       extractedToken must beNone
+       extractedToken must beSome("TOKEN")
      }
 
      "not extract from an email address with no domain separator" in {
@@ -65,8 +94,13 @@ class TestUsernamesTest extends Specification {
      }
 
      "embed into an email address" in {
-       val email = TestUsernames.tokenToEmail("test.user@thegulocal.com", "TOKEN")
+       val email = TestUsernames.tokenToEmail(Some("test.user@thegulocal.com"), "TOKEN")
        email must beEqualTo("test.user+TOKEN@thegulocal.com")
+     }
+
+     "embed into a dummy email address" in {
+       val email = TestUsernames.tokenToEmail(None, "TOKEN")
+       email must beEqualTo("TOKEN@thegulocal.com")
      }
 
    }
