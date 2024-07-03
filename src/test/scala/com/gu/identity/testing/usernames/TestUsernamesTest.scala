@@ -53,8 +53,6 @@ class TestUsernamesTest extends Specification {
        val testUsernames = TestUsernames(encoder)
 
        val username = testUsernames.generateEmail(None)
-       println("generated: " + username)
-
        testUsernames.isValidEmail(username.email) must beTrue
      }
 
